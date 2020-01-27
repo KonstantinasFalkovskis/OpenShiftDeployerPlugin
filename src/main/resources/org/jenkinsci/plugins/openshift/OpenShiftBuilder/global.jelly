@@ -1,0 +1,37 @@
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
+	<f:section title="OpenShift">
+		<f:entry title="SSH Public Key Path" field="publicKeyPath">
+			<f:textbox value="${publicKeyPath}" default="${instance.defaultSSHPublicKeyPath}" />
+		</f:entry>  
+		<f:entry title="OpenShift Servers">
+			<f:repeatable name="servers" var="server" items="${descriptor.servers}" header="OpenShift Server" noAddButton="false">
+				<table style="margin-top:2em">
+					<f:entry title="Name" field="name">
+				        <f:textbox name="name" value="${server.name}" />
+				    </f:entry>
+				   	
+					<f:entry title="Broker Address" field="brokerAddress">
+				        <f:textbox name="brokerAddress" value="${server.brokerAddress}" default="openshift.redhat.com" />
+				    </f:entry>
+				    
+				    <f:entry title="Username" field="username">
+				        <f:textbox name="username" value="${server.username}" />
+				    </f:entry>				  
+				    
+				    <f:entry title="Password" field="password">
+				        <f:password name="password" value="${server.password}"/>
+				    </f:entry>
+				    <f:entry>
+				    	<f:validateButton title="Check Login" progress="Loggin in..." method="checkLogin" with="brokerAddress,username,password" />
+				    	<f:validateButton title="Upload SSH Keys" progress="Uploading..." method="uploadSSHKeys" with="publicKeyPath,brokerAddress,username,password, " />
+				    </f:entry>
+				    <f:entry>
+				    	<div align="right">
+				    		<f:repeatableDeleteButton/>
+				    	</div>
+				    </f:entry>
+				</table> 
+			</f:repeatable>
+		</f:entry>
+	</f:section>	
+</j:jelly>
